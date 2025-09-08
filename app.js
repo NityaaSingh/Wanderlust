@@ -3,10 +3,11 @@ const app = express();
 //const data = require("./init/data.js");
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/wanderlust";
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate=require("ejs-mate");
+require("dotenv").config();
 
 // Database connection
 main()
@@ -70,7 +71,7 @@ app.get("/listings/:id/edit", async (req, res) => {
 app.put("/listings/:id", async (req, res) => {
   let { id } = req.params;
   id = id.trim();
-  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  await Listing.findByIdAndUpdate(id, { ...req.body.listing});
   res.redirect(`/listings/${id}`);
 });
 
@@ -89,6 +90,7 @@ app.delete("/listings/:id", async (req, res) => {
 // });
 
 // Server
-app.listen(8080, () => {
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
   console.log("Server is listening to port 8080");
 });
