@@ -3,11 +3,11 @@ const app = express();
 //const data = require("./init/data.js");
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
-const MONGO_URL = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/wanderlust";
+const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate=require("ejs-mate");
-require("dotenv").config();
+const wrapAsync=require("./utils/wrapAsync.js");
 
 // Database connection
 main()
@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname,"/public")));
 
 // Root route
 app.get("/", (req, res) => {
-  res.redirect("/listings");
+  res.send("Hi, I am root");
 });
 
 // Index Route
@@ -54,11 +54,14 @@ app.get("/listings/:id", async (req, res) => {
 });
 
 // Create Route
-app.post("/listings", async (req, res) => {
-  const newListing = new Listing(req.body.listing);
+app.post("/listings",
+  wrapAsync( async (req, res,next) => {
+  
+    const newListing = new Listing(req.body.listing);
   await newListing.save();
   res.redirect("/listings");
-});
+})
+);
 
 // Edit Route
 app.get("/listings/:id/edit", async (req, res) => {
@@ -70,8 +73,8 @@ app.get("/listings/:id/edit", async (req, res) => {
 // Update Route
 app.put("/listings/:id", async (req, res) => {
   let { id } = req.params;
-  id = id.trim();
-  await Listing.findByIdAndUpdate(id, { ...req.body.listing});
+  id=id.trim();
+  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
   res.redirect(`/listings/${id}`);
 });
 
@@ -86,11 +89,13 @@ app.delete("/listings/:id", async (req, res) => {
 // app.get("/seed", async (req, res) => {
 //   await Listing.deleteMany({});
 //   await Listing.insertMany(data);
-//   res.send("✅ Database seeded with listings from data.js!");
+//   res.send("✅ Database seeded with listings from data.js!");
 // });
+app.use((err,req,res,next)=>{
+   res.send("something went wrong!");
+});
 
 // Server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log("Server is listening to port 8080");
-});
+app.listen(8081, () => {
+  console.log("Server is listening to port 8081");
+});  

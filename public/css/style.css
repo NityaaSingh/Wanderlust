@@ -3,6 +3,7 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: #ecaab8 !important;
 }
 
 .container{
@@ -10,14 +11,14 @@ body{
 }
 .navbar{
     height:5rem;
-    background-color: rgb(206, 236, 252);
+    background-color: rgb(174, 167, 228);
 }
 .fa-compass{
     color:#fb5d7f;
     font-size:2rem;
 }
 .nav-link{
-    color:#222222 !important;
+    color:#070707 !important;
 }
 
 /* footer */
@@ -43,16 +44,19 @@ body{
 .f-info{
     text-align: center;
     height: 8rem;
-    background-color:rgba(141, 133, 133, 0.144);
+    background-color:rgba(235, 200, 221, 0.804);
+
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: space-evenly;
+    
 }
 /* Cards*/
 .card{
     border:none !important;
     margin-bottom: 2rem;
+    background-color: #ecaab8;
 }
 .card-img-top{
     border-radius: 1rem !important;
@@ -61,7 +65,9 @@ body{
 
 }
 .card-body{
+   
     padding:0 !important;
+    background-color: #ecaab8 !important; 
 
 }
 .card-text p{
